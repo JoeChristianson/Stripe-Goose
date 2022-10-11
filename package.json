@@ -1,0 +1,26 @@
+{
+  "name": "stripe-goose",
+  "version": "1.0.0",
+  "description": "A node package for handling stripe payments with a user id saved in a mongoose document",
+  "main": "index.js",
+  "scripts": {
+    "test": "test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoeChristianson/Stripe-Goose.git"
+  },
+  "keywords": [
+    "stripe",
+    "mongoose"
+  ],
+  "author": "Joe Christianson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JoeChristianson/Stripe-Goose/issues"
+  },
+  "homepage": "https://github.com/JoeChristianson/Stripe-Goose#readme",
+  "dependencies": {
+    "stripe": "^10.13.0"
+  }
+}
