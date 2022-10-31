@@ -1,4 +1,4 @@
-#Stripe-Goose
+# Stripe-Goose
 
 This is a package for handling stripe actions using a customerId value in a mongoose document's field. 
 
