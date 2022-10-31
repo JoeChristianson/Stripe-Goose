@@ -1,6 +1,6 @@
 {
   "name": "stripe-goose",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "A node package for handling stripe payments with a user id saved in a mongoose document",
   "main": "index.js",
   "scripts": {
