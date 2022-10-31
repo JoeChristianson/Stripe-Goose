@@ -1,9 +1,14 @@
 const addPaymentMethodAfterCreating = async (customerId,paymentMethodId,stripe)=>{
-    const paymentMethod = await stripe.paymentMethods.attach(
-        paymentMethodId,
-        {customer: customerId}
-    )
-    return paymentMethod
+    try{
+
+        const paymentMethod = await stripe.paymentMethods.attach(
+            paymentMethodId,
+            {customer: customerId}
+            )
+            return paymentMethod
+        }catch(err){
+            console.error(err)
+        }
 }
 
 module.exports = addPaymentMethodAfterCreating
