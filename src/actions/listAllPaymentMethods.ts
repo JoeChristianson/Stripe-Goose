@@ -1,8 +1,8 @@
-const listAllPaymentMethods = async (stripe,customer)=>{
+const listAllPaymentMethodsFunc = async (stripe,customer)=>{
     const paymentMethods = await stripe.paymentMethods.list(
         {customer,type:"card"}
       );
     return paymentMethods.data
 }
 
-module.exports = listAllPaymentMethods
+module.exports = listAllPaymentMethodsFunc

@@ -1,8 +1,8 @@
-const removePaymentMethodFunc = async (paymentMethodId,stripe)=>{
+const removePaymentMethodFunc1 = async (paymentMethodId,stripe)=>{
     const paymentMethod = await stripe.paymentMethods.detach(
         paymentMethodId
     )
     return paymentMethod
 }
 
-module.exports = removePaymentMethodFunc
+module.exports = removePaymentMethodFunc1

@@ -1,4 +1,4 @@
-const createPaymentMethod = async  (card,stripe)=>{
+const createPaymentMethodFunc = async  (card,stripe)=>{
     const paymentMethod = await stripe.paymentMethods.create({
       type: 'card',
       card
@@ -14,4 +14,4 @@ const createPaymentMethod = async  (card,stripe)=>{
     return paymentMethod
 }
 
-module.exports = createPaymentMethod
+module.exports = createPaymentMethodFunc

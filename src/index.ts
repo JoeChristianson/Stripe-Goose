@@ -5,7 +5,12 @@ const listAllPaymentMethods = require("./actions/listAllPaymentMethods")
 const removePaymentMethodFunc = require("./actions/removePaymentMethod")
 const makePaymentFunc = require("./actions/makePayment")
 
+
+
 class StripeGoose{
+    stripeSecretKey:string;
+    stripe:any;
+    collection:any;
     constructor(stripeSecretKey,collection){
         this.stripeSecretKey=stripeSecretKey
         this.stripe = require("stripe")(stripeSecretKey)
@@ -89,5 +94,9 @@ class StripeGoose{
     }
 
 }
+
+console.log(StripeGoose);
+
+
 
 module.exports = StripeGoose

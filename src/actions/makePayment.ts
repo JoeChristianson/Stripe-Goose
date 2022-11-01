@@ -1,4 +1,4 @@
-const makePaymentFunc = async (customer,paymentMethodId,amount,currency,stripe)=>{
+const makePaymentFunc1 = async (customer,paymentMethodId,amount,currency,stripe)=>{
     const paymentIntent = await stripe.paymentIntents.create(
         {customer,amount,
         currency,
@@ -10,4 +10,4 @@ const makePaymentFunc = async (customer,paymentMethodId,amount,currency,stripe)=
     return paymentIntent
 }
 
-module.exports = makePaymentFunc
+module.exports = makePaymentFunc1
