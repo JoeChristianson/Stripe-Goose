@@ -1,4 +1,6 @@
-const createPaymentMethod = async  (card,stripe)=>{
+import { Card, PaymentMethod, StripeObject } from "../custom-types";
+
+const createPaymentMethodFunc = async (card:Card,stripe:StripeObject):Promise<PaymentMethod>=>{
     const paymentMethod = await stripe.paymentMethods.create({
       type: 'card',
       card
@@ -14,4 +16,4 @@ const createPaymentMethod = async  (card,stripe)=>{
     return paymentMethod
 }
 
-module.exports = createPaymentMethod
+export default createPaymentMethodFunc
