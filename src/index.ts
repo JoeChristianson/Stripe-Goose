@@ -94,4 +94,4 @@ class StripeGoose{
 }
 
 
-export default StripeGoose
+module.exports = StripeGoose
