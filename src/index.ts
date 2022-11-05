@@ -1,64 +1,62 @@
-const addPaymentMethodAfterCreating = require("./actions/addPaymentMethod")
-const createCustomerFunc = require("./actions/createCustomer")
-const createPaymentMethod = require("./actions/createPaymentMethod")
-const listAllPaymentMethods = require("./actions/listAllPaymentMethods")
-const removePaymentMethodFunc = require("./actions/removePaymentMethod")
-const makePaymentFunc = require("./actions/makePayment")
-
+import { Card, PaymentIntent, PaymentMethod, PaymentMethodsData, StripeObject, UserDocument } from "./custom-types"
+import listAllPaymentMethods from "./actions/listAllPaymentMethods"
+import addPaymentMethodAfterCreating from "./actions/addPaymentMethod"
+import createCustomerFunc from "./actions/createCustomer"
+import createPaymentMethod from "./actions/createPaymentMethod"
+import removePaymentMethodFunc from "./actions/removePaymentMethod"
+import makePaymentFunc from "./actions/makePayment"
 
 
 class StripeGoose{
     stripeSecretKey:string;
-    stripe:any;
+    stripe:StripeObject;
     collection:any;
     constructor(stripeSecretKey,collection){
         this.stripeSecretKey=stripeSecretKey
         this.stripe = require("stripe")(stripeSecretKey)
         this.collection = collection
     }
-    testLog(){
-        return "working!"
-    }
-    async createCustomer(userId){
-        const user = await this.getUser(userId)
-        const res = await createCustomerFunc(this.stripe,user)
+    async createCustomer(userId:string):Promise<object>{
+        const user:UserDocument = await this.getUser(userId)
+        const res:any = await createCustomerFunc(this.stripe,user)
         return res
     }
-    async getUser(userId){
+    async getUser(userId:string):Promise<UserDocument>{
         return this.collection.findById(userId)
     }
-    async addPaymentMethodWithId(userId,paymentMethodId){
+    async addPaymentMethodWithId(userId:string,paymentMethodId:string):Promise<object|Error>{
         try{
-            const user = await this.getUser(userId)
-            const customerId = user.stripeId
-            console.log(customerId);
-            const res = await addPaymentMethodAfterCreating(customerId,paymentMethodId,this.stripe)
-            console.log(res);
+            const user:UserDocument = await this.getUser(userId)
+            const customerId:string = user.stripeId
+            const res:(PaymentMethod|void) = await addPaymentMethodAfterCreating(customerId,paymentMethodId,this.stripe)
+            if(!res){
+                throw "payment method failed to add"
+            }
             return res;
         }catch(err){
             return err
         }
     }
-    async addCard(userId,card){
-        const paymentMethod = await createPaymentMethod(card,this.stripe)
-        const user = await this.getUser(userId)
-        const customerId = user.stripeId
-        const res = await addPaymentMethodAfterCreating(customerId,paymentMethod.id,this.stripe)
+    async addCard(userId:string,card:Card):Promise<object|void>{
+        const paymentMethod:PaymentMethod = await createPaymentMethod(card,this.stripe)
+        const user:UserDocument = await this.getUser(userId)
+        const customerId:string = user.stripeId
+        const res:(PaymentMethod|void) = await addPaymentMethodAfterCreating(customerId,paymentMethod.id,this.stripe)
         return res
     }
-    async getUsersPaymentMethods(userId){
-        const user = await this.getUser(userId)
-        const customerId = user.stripeId
-        const res =  await listAllPaymentMethods(this.stripe,customerId)
+    async getUsersPaymentMethods(userId:string):Promise<PaymentMethodsData>{
+        const user:UserDocument = await this.getUser(userId)
+        const customerId:string = user.stripeId
+        const res:(PaymentMethodsData) =  await listAllPaymentMethods(this.stripe,customerId)
         return res
     }
-    async getUsersPaymentMethodsIds(userId){
+    async getUsersPaymentMethodsIds(userId:string):Promise<string[]>{
         const pms = await this.getUsersPaymentMethods(userId)
         return pms.map(pm=>pm.id)
     }
-    async radioPaymentMetaData(userId,metadataTag,paymentMethodId){
+    async radioPaymentMetaData(userId:string,metadataTag:string,paymentMethodId:string):Promise<void>{
         try{
-            const pmIds = await this.getUsersPaymentMethodsIds(userId);
+            const pmIds:string[] = await this.getUsersPaymentMethodsIds(userId);
             pmIds.forEach(async pmId=>{
                 if(pmId===paymentMethodId){
                     await this.updateMetaData(pmId,{[metadataTag]:true})
@@ -71,23 +69,23 @@ class StripeGoose{
             console.error(err)
         }
     }
-    async getUsersCards(userId){
-        const paymentMethods = await this.getUsersPaymentMethods(userId)
-        const res = paymentMethods.map(m=>m.card);
+    async getUsersCards(userId:string):Promise<any[]>{
+        const paymentMethods:PaymentMethod[] = await this.getUsersPaymentMethods(userId)
+        const res:any[] = paymentMethods.map(m=>m.card);
         return res
     }
-    async removeCard (paymentMethodId){
+    async removeCard (paymentMethodId:string):Promise<any>{
         const res = await removePaymentMethodFunc(paymentMethodId,this.stripe)
         return res
     }
-    async makePayment (userId,paymentMethodId,amount,currency){
-        const user = await this.getUser(userId)
-        const customer = user.stripeId
-        const res = await makePaymentFunc(customer,paymentMethodId,amount,currency,this.stripe)
+    async makePayment (userId:string,paymentMethodId:string,amount:number,currency:string):Promise<PaymentIntent>{
+        const user:UserDocument = await this.getUser(userId)
+        const customer:string = user.stripeId
+        const res:PaymentIntent = await makePaymentFunc(customer,paymentMethodId,amount,currency,this.stripe)
         return res
     }
-    async updateMetaData(paymentMethodId,metadata){
-        const res = await this.stripe.paymentMethods.update(
+    async updateMetaData(paymentMethodId:string,metadata:object):Promise<any>{
+        const res:any = await this.stripe.paymentMethods.update(
             paymentMethodId,{metadata}
         )
         return res
@@ -95,8 +93,5 @@ class StripeGoose{
 
 }
 
-console.log(StripeGoose);
 
-
-
-module.exports = StripeGoose
+export default StripeGoose

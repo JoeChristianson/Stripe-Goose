@@ -1,4 +1,6 @@
-const makePaymentFunc1 = async (customer,paymentMethodId,amount,currency,stripe)=>{
+import { StripeObject } from "../custom-types"
+
+const makePaymentFunc1 = async (customer:string,paymentMethodId:string,amount:number,currency:string,stripe:StripeObject)=>{
     const paymentIntent = await stripe.paymentIntents.create(
         {customer,amount,
         currency,
@@ -10,4 +12,4 @@ const makePaymentFunc1 = async (customer,paymentMethodId,amount,currency,stripe)
     return paymentIntent
 }
 
-module.exports = makePaymentFunc1
+export default makePaymentFunc1

@@ -1,6 +1,7 @@
+import {Document} from "mongoose"
+import { StripeCustomer, StripeObject,UserDocument } from "../custom-types";
 
-
-const createCustomer = async (stripe,user)=>{
+const createCustomer = async (stripe:StripeObject,user:UserDocument):Promise<StripeCustomer>=>{
   const customer = await stripe.customers.create({
       description: 'My First Test Customer (created for API docs at https://www.stripe.com/docs/api)',
     });
@@ -11,4 +12,4 @@ const createCustomer = async (stripe,user)=>{
 
 
 
-module.exports = createCustomer
+export default createCustomer
