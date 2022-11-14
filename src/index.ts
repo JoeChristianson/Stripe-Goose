@@ -78,10 +78,10 @@ class StripeGoose{
         const res = await removePaymentMethodFunc(paymentMethodId,this.stripe)
         return res
     }
-    async makePayment (userId:string,paymentMethodId:string,amount:number,currency:string):Promise<PaymentIntent>{
+    async makePayment (userId:string,paymentMethodId:string,amount:number,currency:string,options):Promise<PaymentIntent>{
         const user:UserDocument = await this.getUser(userId)
         const customer:string = user.stripeId
-        const res:PaymentIntent = await makePaymentFunc(customer,paymentMethodId,amount,currency,this.stripe)
+        const res:PaymentIntent = await makePaymentFunc(customer,paymentMethodId,amount,currency,this.stripe,options)
         return res
     }
     async updateMetaData(paymentMethodId:string,metadata:object):Promise<any>{
