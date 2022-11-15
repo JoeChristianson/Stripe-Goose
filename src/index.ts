@@ -6,15 +6,16 @@ import createPaymentMethod from "./actions/createPaymentMethod"
 import removePaymentMethodFunc from "./actions/removePaymentMethod"
 import makePaymentFunc from "./actions/makePayment"
 
-
 class StripeGoose{
     stripeSecretKey:string;
     stripe:StripeObject;
     collection:any;
+    modelCheck:any;
     constructor(stripeSecretKey,collection){
         this.stripeSecretKey=stripeSecretKey
         this.stripe = require("stripe")(stripeSecretKey)
-        this.collection = collection
+        this.collection = collection;
+        this.modelCheck = collection.findById.prototype
     }
     async createCustomer(userId:string):Promise<object>{
         const user:UserDocument = await this.getUser(userId)
@@ -28,7 +29,7 @@ class StripeGoose{
         try{
             const user:UserDocument = await this.getUser(userId)
             const customerId:string = user.stripeId
-            const res:(PaymentMethod|void) = await addPaymentMethodAfterCreating(customerId,paymentMethodId,this.stripe)
+            const res:(PaymentMethod|Error|void) = await addPaymentMethodAfterCreating(customerId,paymentMethodId,this.stripe)
             if(!res){
                 throw "payment method failed to add"
             }
@@ -41,7 +42,11 @@ class StripeGoose{
         const paymentMethod:PaymentMethod = await createPaymentMethod(card,this.stripe)
         const user:UserDocument = await this.getUser(userId)
         const customerId:string = user.stripeId
-        const res:(PaymentMethod|void) = await addPaymentMethodAfterCreating(customerId,paymentMethod.id,this.stripe)
+        const res:(PaymentMethod|Error|void) = await addPaymentMethodAfterCreating(customerId,paymentMethod.id,this.stripe)
+        if(!res||(res instanceof Error)||res.customer===undefined){
+            throw "No Correct StripeId Found"
+        }
+        
         return res
     }
     async getUsersPaymentMethods(userId:string):Promise<PaymentMethodsData>{
@@ -90,7 +95,22 @@ class StripeGoose{
         )
         return res
     }
-
+    async updatePaymentIntentMetaData(paymentIntentId:string,metadata:object):Promise<any>{
+        const res:any = await this.stripe.paymentIntents.update(
+            paymentIntentId,{metadata}
+        )
+        return res
+    }
+    async testKey(){
+        try{
+            const stripeTest = require("stripe")(this.stripeSecretKey)
+            const customers = await stripeTest.customers.list({limit:1})
+            return {error:false}
+        }catch(err){
+            // throw new Error("Incorrect Stripe Key")
+            return {error:"Incorrect Stripe Key"}
+        }
+    }
 }
 
 

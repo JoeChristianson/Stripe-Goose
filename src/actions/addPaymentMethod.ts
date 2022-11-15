@@ -1,6 +1,6 @@
 import { PaymentMethod, StripeObject } from "../custom-types"
 
-const addPaymentMethodAfterCreatingFunc = async (customerId:string,paymentMethodId:string,stripe:StripeObject):Promise<PaymentMethod|void>=>{
+const addPaymentMethodAfterCreatingFunc = async (customerId:string,paymentMethodId:string,stripe:StripeObject):Promise<PaymentMethod|Error|void>=>{
     try{
         const paymentMethod = await stripe.paymentMethods.attach(
             paymentMethodId,
@@ -8,7 +8,7 @@ const addPaymentMethodAfterCreatingFunc = async (customerId:string,paymentMethod
             )
             return paymentMethod
         }catch(err){
-            console.error(err)
+            return new Error(err)
         }
 }
 

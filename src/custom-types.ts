@@ -13,7 +13,8 @@ type StripeCustomers = {
 
 export type PaymentMethod = {
     id:string,
-    card:object
+    card:object,
+    customer:string
 }
 type TypeAndCard = {
     type:string,
@@ -40,9 +41,11 @@ type StripePaymentMethods = {
 export type PaymentIntent = any
 
 type PaymentIntentsCreate = (a:{customer:string,amount:number,currency:string,payment_method_types:string[],payment_method:string,confirm:boolean})=>Promise<PaymentIntent>
+type PaymentIntentsUpdate = (paymentIntentId:string,paymentIntentProperties:object)=>Promise<PaymentIntent>
 
 type StripePaymentIntents = {
-    create:PaymentIntentsCreate
+    create:PaymentIntentsCreate,
+    update:PaymentIntentsUpdate
 }
 
 export type StripeObject = {
