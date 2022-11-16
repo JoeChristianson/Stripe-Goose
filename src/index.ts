@@ -89,11 +89,34 @@ class StripeGoose{
         const res:PaymentIntent = await makePaymentFunc(customer,paymentMethodId,amount,currency,this.stripe,options)
         return res
     }
+    // this is the same as the function below with a more specific name
     async updateMetaData(paymentMethodId:string,metadata:object):Promise<any>{
-        const res:any = await this.stripe.paymentMethods.update(
-            paymentMethodId,{metadata}
-        )
-        return res
+        if(!(typeof metadata ==="object") || Array.isArray(metadata)){
+            throw new Error("Metadata must be an object.")
+        }
+        try{
+
+            const res:any = await this.stripe.paymentMethods.update(
+                paymentMethodId,{metadata}
+                )
+                return res
+            }catch(err){                
+                throw new Error(err.raw.message)
+            }
+    }
+    async updatePaymentMethodMetaData(paymentMethodId:string,metadata:object):Promise<any>{
+        if(!(typeof metadata ==="object") || Array.isArray(metadata)){
+            throw new Error("Metadata must be an object.")
+        }
+        try{
+
+            const res:any = await this.stripe.paymentMethods.update(
+                paymentMethodId,{metadata}
+                )
+                return res
+            }catch(err){
+                throw new Error(err.raw.message)
+            }
     }
     async updatePaymentIntentMetaData(paymentIntentId:string,metadata:object):Promise<any>{
         if(!(typeof metadata ==="object") || Array.isArray(metadata)){
