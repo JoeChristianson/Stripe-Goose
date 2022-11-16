@@ -96,10 +96,18 @@ class StripeGoose{
         return res
     }
     async updatePaymentIntentMetaData(paymentIntentId:string,metadata:object):Promise<any>{
-        const res:any = await this.stripe.paymentIntents.update(
-            paymentIntentId,{metadata}
-        )
-        return res
+        if(!(typeof metadata ==="object") || Array.isArray(metadata)){
+            throw new Error("Metadata must be an object.")
+        }
+        try{
+
+            const res:any = await this.stripe.paymentIntents.update(
+                paymentIntentId,{metadata}
+                )
+                        return res
+            }catch(err){
+                throw new Error(err.raw.message)
+            }
     }
     async testKey(){
         try{
