@@ -100,7 +100,7 @@ class StripeGoose{
                 paymentMethodId,{metadata}
                 )
                 return res
-            }catch(err){
+            }catch(err){                
                 throw new Error(err.raw.message)
             }
     }

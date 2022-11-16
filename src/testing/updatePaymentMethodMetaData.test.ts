@@ -33,13 +33,13 @@ describe("Updating Payment Intent Metadata",()=>{
         const stripeGoose = new StripeGoose(stripeSecretKey,User);
         const t = async ()=>{
             const metadata = {trackingId:"abc123",isFragile:"true",items:"50"}
-            const paymentMethodId = "pi_3M4b8aI432L4JNHFQKV0wOL9bSg"
+            const paymentMethodId = "pm_3M4b8aI432L4JNHFQKV0wOL9bSg"
             const response = await stripeGoose.updatePaymentMethodMetaData(paymentMethodId,metadata)          
             return response
         }
         expect(async ()=>{
             await t()
-        }).rejects.toThrowError("No such payment_intent: 'pi_3M4b8aI432L4JNHFQKV0wOL9bSg'")
+        }).rejects.toThrowError("No such PaymentMethod: 'pm_3M4b8aI432L4JNHFQKV0wOL9bSg'")
     })
     test("with incorrect metadata data type, the update throws an error.",
     async()=>{
