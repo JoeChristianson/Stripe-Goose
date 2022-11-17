@@ -12,6 +12,9 @@ test("with correct secret key and userId, customer is created and customerId is 
     const t = async ()=>{
         const result = await stripeGoose.createCustomer("1");
         const user = User.findById("1")
+        stripeGoose.deleteCustomer("1")
+        stripeGoose.stripe.customers.del(user.stripeId)
+        stripeGoose.stripe.customers.del("cus_MoRRjuBX98HZgf")
         return user.stripeId
     }
     return t().then(data=>{        
@@ -23,17 +26,13 @@ test("With an incorrect userId, the method errors out.",()=>{
     expect.assertions(1)
     const stripeGoose = new StripeGoose(stripeSecretKey,User);
     const t = async ()=>{
-        try{
-            const result = await stripeGoose.createCustomer("20");
-            const user = User.findById("1")
+            await stripeGoose.createCustomer("20");
+            const user = User.findById("20")
             return user.stripeId
-        }catch(err){
-            return "error"
-        }
     }
-    return t().then(data=>{        
-        expect(data).toBe("error")
-    })
+    expect(async ()=>{
+        await t()
+    }).rejects.toThrowError("Incorrect ID passed as parameter.")
 })
 
 })
