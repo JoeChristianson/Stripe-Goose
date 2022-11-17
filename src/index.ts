@@ -19,7 +19,17 @@ class StripeGoose{
     }
     async createCustomer(userId:string):Promise<object>{
         const user:UserDocument = await this.getUser(userId)
+        if(!user){
+            console.log("throwin error");
+            
+            throw new Error("Incorrect ID passed as parameter.")
+        }
         const res:any = await createCustomerFunc(this.stripe,user)
+        return res
+    }
+    async deleteCustomer(userId:string):Promise<object>{
+        const user:UserDocument = await this.getUser(userId)
+        const res:any = await this.stripe.customers.del(user.stripeId)
         return res
     }
     async getUser(userId:string):Promise<UserDocument>{
@@ -48,6 +58,38 @@ class StripeGoose{
         }
         
         return res
+    }
+    async clearPaymentIntentMetaData(paymentIntentId:string){
+        const metadata:any = await this.getPaymentIntentMetaData(paymentIntentId)
+        for (let key in metadata){
+            metadata[key]=""
+        }
+        const res = await this.updatePaymentIntentMetaData(paymentIntentId,metadata)
+        return res
+    }
+    async clearPaymentMethodMetaData(paymentMethodId:string){
+        const metadata:any = await this.getPaymentMethodMetaData(paymentMethodId)
+        for (let key in metadata){
+            metadata[key]=""
+        }
+        const res = await this.updatePaymentMethodMetaData(paymentMethodId,metadata)
+        return res
+    }
+    async getPaymentIntent(paymentIntentId:string){
+        const res = await this.stripe.paymentIntents.retrieve(paymentIntentId)
+        return res
+    }
+    async getPaymentIntentMetaData(paymentIntentId){
+        const paymentIntent = await this.getPaymentIntent(paymentIntentId)
+        return paymentIntent.metadata
+    }
+    async getPaymentMethod(paymentMethodId:string){
+        const res = await this.stripe.paymentMethods.retrieve(paymentMethodId)
+        return res
+    }
+    async getPaymentMethodMetaData(paymentMethodId){
+        const paymentMethod = await this.getPaymentMethod(paymentMethodId)
+        return paymentMethod.metadata
     }
     async getUsersPaymentMethods(userId:string):Promise<PaymentMethodsData>{
         const user:UserDocument = await this.getUser(userId)

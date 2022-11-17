@@ -11,6 +11,7 @@ describe("Updating Payment Intent Metadata",()=>{
             const metadata = {trackingId:"t3246ds4"}
             const paymentIntentId = "pi_3M4b8aIL4JNHFQKV0wOL9bSg"
             const response = await stripeGoose.updatePaymentIntentMetaData(paymentIntentId,metadata)
+            stripeGoose.clearPaymentIntentMetaData(paymentIntentId)
             return response
         }
         const result = await t()
@@ -23,6 +24,7 @@ describe("Updating Payment Intent Metadata",()=>{
             const metadata = {trackingId:"abc123",isFragile:"true",items:"50"}
             const paymentIntentId = "pi_3M4b8aIL4JNHFQKV0wOL9bSg"
             const response = await stripeGoose.updatePaymentIntentMetaData(paymentIntentId,metadata)          
+            stripeGoose.clearPaymentIntentMetaData(paymentIntentId)
             return response
         }
         const result = await t()

@@ -4,6 +4,7 @@ const StripeGoose = require("../index")
 require("dotenv").config()
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY
 
+// No teardown needed
 
 describe("Creating an instance of Stripegoose",()=>{
      test("We can create a stripegoose instance with a Model and a stripe secret key",()=>{

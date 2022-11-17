@@ -11,6 +11,7 @@ describe("Updating Payment Intent Metadata",()=>{
             const metadata = {trackingId:"t3246ds4"}
             const paymentMethodId = "pm_1LvO3vIL4JNHFQKVsFlOJcw0"
             const response = await stripeGoose.updatePaymentMethodMetaData(paymentMethodId,metadata)
+            stripeGoose.clearPaymentMethodMetaData(paymentMethodId)
             return response
         }
         const result = await t()
@@ -23,6 +24,7 @@ describe("Updating Payment Intent Metadata",()=>{
             const metadata = {trackingId:"abc123",isFragile:"true",items:"50"}
             const paymentMethodId = "pm_1LvO3vIL4JNHFQKVsFlOJcw0"
             const response = await stripeGoose.updatePaymentMethodMetaData(paymentMethodId,metadata)          
+            stripeGoose.clearPaymentMethodMetaData(paymentMethodId)
             return response
         }
         const result = await t()

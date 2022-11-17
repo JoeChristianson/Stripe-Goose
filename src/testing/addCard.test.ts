@@ -1,3 +1,4 @@
+import { removeCard } from "../cleanup"
 import User from "./model"
 const StripeGoose = require("../index")
 require("dotenv").config()
@@ -10,13 +11,15 @@ test("with a User with a stripeId, we can add a card using a well-formed card ob
     const stripeGoose = new StripeGoose(stripeSecretKey,User);
     const t = async ()=>{
         const card ={
-            number: '5555555555554444',
+            number: '4242424242424242',
             exp_month: 10,
             exp_year: 2023,
             cvc: '314',
           }
         const response = await stripeGoose.addCard("0",card)
         const result = {customer:response.customer.substring(0,4),object:response.object}
+        removeCard(stripeGoose,response.id)
+
         return result
     }
     return t().then(data=>{        

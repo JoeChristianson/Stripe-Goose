@@ -4,6 +4,8 @@ const StripeGoose = require("../index")
 require("dotenv").config()
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY
 
+// No teardown needed
+
 test("If we pass an correct key, the error is false",()=>{
     const t = async ()=>{
               const stripeGoose = new StripeGoose(stripeSecretKey,User)

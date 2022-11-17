@@ -1,14 +1,13 @@
 {
   "name": "stripe-goose",
-  "version": "1.5.1",
-  "description": "A node package for handling stripe payments with a user id saved in a mongoose document",
+  "version": "1.4.0",
+  "description": "A node package for handling stripe payments with a user ID saved in a mongoose document",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "playground": "npm run build && node dist/testing/playground.js",
     "prepublish": "tsc",
-    "test": "npm run build && jest"
+    "test": "test.js"
   },
   "repository": {
     "type": "git",
@@ -25,13 +24,10 @@
   },
   "homepage": "https://github.com/JoeChristianson/Stripe-Goose#readme",
   "dependencies": {
+    "mongoose": "^6.7.1",
     "stripe": "^10.13.0"
   },
   "devDependencies": {
-    "@types/jest": "^29.2.3",
-    "dotenv": "^16.0.3",
-    "jest": "^29.3.1",
-    "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1"
   }
 }
