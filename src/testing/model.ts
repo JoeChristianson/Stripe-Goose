@@ -35,9 +35,13 @@ const user0 = {id:"0",stripeId:"cus_MnnCidkFvgekHB",...userMethods}
 const user1 = {id:"1",...userMethods}
 // this is an incorrect stripeId
 const user2 = {id:"2",stripeId:"cus_isdnfin3939nvf9",...userMethods}
+const userWithCorrectStripeId = {id:"userWithCorrectStripeId",stripeId:"cus_MoQil87e5BWxM0",...userMethods}
+const userWithPaymentMethods = {id:"userWithPaymentMethods",stripeId:"cus_MourjJIjIoIoY5",...userMethods}
 User.addUser(user0)
 User.addUser(user1)
 User.addUser(user2)
+User.addUser(userWithCorrectStripeId)
+User.addUser(userWithPaymentMethods)
 
 export default User
 

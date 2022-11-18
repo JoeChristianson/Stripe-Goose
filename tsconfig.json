@@ -1,5 +1,5 @@
-{
-    "compilerOptions": { /* Docs: https://www.typescriptlang.org/tsconfig */
+
+{    "compilerOptions": { 
       "target": "ES2020",
       "declaration": true,
       "module": "commonjs",
@@ -29,4 +29,4 @@
       "node_modules",
       "<node_internals>/**",
     ]
-  }
+}
