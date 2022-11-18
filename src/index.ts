@@ -95,6 +95,9 @@ class StripeGoose{
     async getUsersPaymentMethods(userId:string):Promise<PaymentMethodsData>{
         const user:UserDocument = await this.getUser(userId)
         const customerId:string = await user.stripeId
+        if(!customerId){
+            throw new Error("User does not have stripeId.")
+        }
         const res:(PaymentMethodsData) =  await listAllPaymentMethods(this.stripe,customerId)
         return res
     }
@@ -107,10 +110,13 @@ class StripeGoose{
             const pmIds:string[] = await this.getUsersPaymentMethodsIds(userId);
             pmIds.forEach(async pmId=>{
                 if(pmId===paymentMethodId){
-                    await this.updateMetaData(pmId,{[metadataTag]:true})
+                    console.log("changing to true",pmId);
+                    
+                    await this.updateMetaData(pmId,{[metadataTag]:"true"})
                 }
                 else{
-                    await this.updateMetaData(pmId,{[metadataTag]:false})
+                    console.log("changing to false",pmId);
+                    await this.updateMetaData(pmId,{[metadataTag]:"false"})
                 }
             })
         }catch(err){

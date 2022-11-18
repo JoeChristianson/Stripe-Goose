@@ -37,11 +37,13 @@ const user1 = {id:"1",...userMethods}
 const user2 = {id:"2",stripeId:"cus_isdnfin3939nvf9",...userMethods}
 const userWithCorrectStripeId = {id:"userWithCorrectStripeId",stripeId:"cus_MoQil87e5BWxM0",...userMethods}
 const userWithPaymentMethods = {id:"userWithPaymentMethods",stripeId:"cus_MourjJIjIoIoY5",...userMethods}
+const userWithMultiplePaymentMethods = {id:"userWithMultiplePaymentMethods",stripeId:'cus_Mp99UVRXcG2Xz4',...userMethods}
+
 User.addUser(user0)
 User.addUser(user1)
 User.addUser(user2)
 User.addUser(userWithCorrectStripeId)
 User.addUser(userWithPaymentMethods)
-
+User.addUser(userWithMultiplePaymentMethods)
 export default User
 

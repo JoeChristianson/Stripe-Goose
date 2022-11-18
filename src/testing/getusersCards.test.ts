@@ -3,23 +3,26 @@ const StripeGoose = require("../index")
 require("dotenv").config()
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY
 
-describe("Getting a User's payment methods",()=>{
+describe("Getting a User's cards",()=>{
 
-    test("With correct userId passed, User's payment Methods are returned",async ()=>{
+    test("With correct userId passed, User's Cards are returned",async ()=>{
         const stripeGoose = new StripeGoose(stripeSecretKey,User);
         const t = async ()=>{
-            const response = await stripeGoose.getUsersPaymentMethods("userWithPaymentMethods")           
-            const res = response.map(p=>p.id)
+            const response = await stripeGoose.getUsersCards("userWithPaymentMethods")   
+            console.log(response);
+                    
+            const res = response.map(p=>p.last4)
+
             return res
         }
         return t().then(data=>{        
-            expect(data).toEqual(["pm_1M5H1qIL4JNHFQKV52FxTMss"])
+            expect(data).toEqual(["4242"])
         })
     })
     test("With userId with no payment methods, empty array is returned",async ()=>{
         const stripeGoose = new StripeGoose(stripeSecretKey,User);
         const t = async ()=>{
-            const response = await stripeGoose.getUsersPaymentMethods("userWithCorrectStripeId")
+            const response = await stripeGoose.getUsersCards("userWithCorrectStripeId")
             const res = response.map(p=>p.id)
             return res
         }
@@ -30,7 +33,7 @@ describe("Getting a User's payment methods",()=>{
     test("With userId with no stripeId, error is thrown",async ()=>{
         const stripeGoose = new StripeGoose(stripeSecretKey,User);
         const t = async ()=>{
-            const response = await stripeGoose.getUsersPaymentMethods("1")
+            const response = await stripeGoose.getUsersCards("1")
             const res = response.map(p=>p.id)
         }
         expect(async ()=>{

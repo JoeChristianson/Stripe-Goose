@@ -28,7 +28,7 @@ describe("Getting a User's payment methods",()=>{
     test("With userId with no stripeId, error is thrown",async ()=>{
         const stripeGoose = new StripeGoose(stripeSecretKey,User);
         const t = async ()=>{
-            const response = await stripeGoose.getUsersPaymentMethodsIds("userWithCorrectStripeId")
+            const response = await stripeGoose.getUsersPaymentMethodsIds("1")
             return response
         }
         expect(async ()=>{

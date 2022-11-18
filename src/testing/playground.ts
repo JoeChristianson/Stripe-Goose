@@ -6,10 +6,14 @@ const stripeSecretKey = process.env.STRIPE_SECRET_KEY
 const stripegoose = new StripeGoose(stripeSecretKey,User)
 
 const main = async ()=>{
-    const metadata = {test:"true"}
-    const args = ["pi_3M4rIxIL4JNHFQKV0GCON2nR"]
-    const res = await stripegoose.clearPaymentIntentMetaData(...args)
-    console.log(res)
+    const response = await stripegoose.getUsersPaymentMethods("1")
+    console.log(response);
+    
+    
+
 }
 
 main()
+
+// 'pm_1M5UwoIL4JNHFQKV0xZIkEtV'
+// 'pm_1M5UwpIL4JNHFQKV12p4jPun'
