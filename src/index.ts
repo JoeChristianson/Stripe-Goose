@@ -107,10 +107,13 @@ class StripeGoose{
             const pmIds:string[] = await this.getUsersPaymentMethodsIds(userId);
             pmIds.forEach(async pmId=>{
                 if(pmId===paymentMethodId){
-                    await this.updateMetaData(pmId,{[metadataTag]:true})
+                    console.log("changing to true",pmId);
+                    
+                    await this.updateMetaData(pmId,{[metadataTag]:"true"})
                 }
                 else{
-                    await this.updateMetaData(pmId,{[metadataTag]:false})
+                    console.log("changing to false",pmId);
+                    await this.updateMetaData(pmId,{[metadataTag]:"false"})
                 }
             })
         }catch(err){
