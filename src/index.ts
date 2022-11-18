@@ -29,16 +29,17 @@ class StripeGoose{
     }
     async deleteCustomer(userId:string):Promise<object>{
         const user:UserDocument = await this.getUser(userId)
-        const res:any = await this.stripe.customers.del(user.stripeId)
+        const stripeId = await user.stripeId
+        const res:any = await this.stripe.customers.del(stripeId)
         return res
     }
     async getUser(userId:string):Promise<UserDocument>{
-        return this.collection.findById(userId)
+        return await this.collection.findById(userId)
     }
     async addPaymentMethodWithId(userId:string,paymentMethodId:string):Promise<object|Error>{
         try{
             const user:UserDocument = await this.getUser(userId)
-            const customerId:string = user.stripeId
+            const customerId:string = await user.stripeId
             const res:(PaymentMethod|Error|void) = await addPaymentMethodAfterCreating(customerId,paymentMethodId,this.stripe)
             if(!res){
                 throw "payment method failed to add"
@@ -51,7 +52,7 @@ class StripeGoose{
     async addCard(userId:string,card:Card):Promise<object|void>{
         const paymentMethod:PaymentMethod = await createPaymentMethod(card,this.stripe)
         const user:UserDocument = await this.getUser(userId)
-        const customerId:string = user.stripeId
+        const customerId:string = await user.stripeId
         const res:(PaymentMethod|Error|void) = await addPaymentMethodAfterCreating(customerId,paymentMethod.id,this.stripe)
         if(!res||(res instanceof Error)||res.customer===undefined){
             throw "No Correct StripeId Found"
@@ -93,7 +94,7 @@ class StripeGoose{
     }
     async getUsersPaymentMethods(userId:string):Promise<PaymentMethodsData>{
         const user:UserDocument = await this.getUser(userId)
-        const customerId:string = user.stripeId
+        const customerId:string = await user.stripeId
         const res:(PaymentMethodsData) =  await listAllPaymentMethods(this.stripe,customerId)
         return res
     }
@@ -127,7 +128,7 @@ class StripeGoose{
     }
     async makePayment (userId:string,paymentMethodId:string,amount:number,currency:string,options):Promise<PaymentIntent>{
         const user:UserDocument = await this.getUser(userId)
-        const customer:string = user.stripeId
+        const customer:string = await user.stripeId
         const res:PaymentIntent = await makePaymentFunc(customer,paymentMethodId,amount,currency,this.stripe,options)
         return res
     }

@@ -7,7 +7,7 @@ const stripeSecretKey = process.env.STRIPE_SECRET_KEY
 describe("Adding Cards to Customer",()=>{
 
 test("with a User with a stripeId, we can add a card using a well-formed card object as an argument",()=>{
-    expect.assertions(1)
+    // expect.assertions(1)
     const stripeGoose = new StripeGoose(stripeSecretKey,User);
     const t = async ()=>{
         const card ={
@@ -16,7 +16,7 @@ test("with a User with a stripeId, we can add a card using a well-formed card ob
             exp_year: 2023,
             cvc: '314',
           }
-        const response = await stripeGoose.addCard("0",card)
+        const response = await stripeGoose.addCard("userWithCorrectStripeId",card)
         const result = {customer:response.customer.substring(0,4),object:response.object}
         removeCard(stripeGoose,response.id)
 
