@@ -6,9 +6,8 @@ const stripeSecretKey = process.env.STRIPE_SECRET_KEY
 const stripegoose = new StripeGoose(stripeSecretKey,User)
 
 const main = async ()=>{
-    const response = await stripegoose.getUsersPaymentMethods("userWithPaymentMethods")           
-    const res = response.map(p=>p.id)
-    console.log(res);
+    const response = await stripegoose.getUsersPaymentMethods("1")
+    console.log(response);
     
     
 

@@ -95,6 +95,9 @@ class StripeGoose{
     async getUsersPaymentMethods(userId:string):Promise<PaymentMethodsData>{
         const user:UserDocument = await this.getUser(userId)
         const customerId:string = await user.stripeId
+        if(!customerId){
+            throw new Error("User does not have stripeId.")
+        }
         const res:(PaymentMethodsData) =  await listAllPaymentMethods(this.stripe,customerId)
         return res
     }
